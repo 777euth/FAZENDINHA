@@ -648,6 +648,14 @@ $colunas_perfil = [
             <input type="date" id="pag_pag" name="data_pagamento">
         </div>
         <div class="form-row">
+            <label for="tipo_pag">Tipo de Pagamento:</label>
+            <select id="tipo_pag" name="tipo" required>
+                <option value="Unico">Único</option>
+                <option value="Mensal">Mensal</option>
+                <option value="Anual">Anual</option>
+            </select>
+        </div>
+        <div class="form-row">
             <label for="status_pag">Status:</label>
             <select id="status_pag" name="status" required>
                 <option value="Pendente">Pendente</option>
@@ -661,6 +669,7 @@ $colunas_perfil = [
             <tr>
                 <th>Descrição</th>
                 <th>Valor</th>
+                <th>Tipo</th>
                 <th>Vencimento</th>
                 <th>Pagamento</th>
                 <th>Status</th>
@@ -677,6 +686,7 @@ $colunas_perfil = [
             <tr>
                 <th>Descrição</th>
                 <th>Valor</th>
+                <th>Tipo</th>
                 <th>Vencimento</th>
                 <th>Status</th>
             </tr>

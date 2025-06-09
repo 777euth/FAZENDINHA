@@ -282,6 +282,7 @@ function updateTabelaPagamentos() {
             row.innerHTML = `
                 <td>${p.descricao || '-'}</td>
                 <td>${parseFloat(p.valor).toFixed(2)}</td>
+                <td>${p.tipo || '-'}</td>
                 <td>${p.data_vencimento || '-'}</td>
                 <td>${p.data_pagamento || '-'}</td>
                 <td>${p.status || '-'}</td>
@@ -300,6 +301,7 @@ function updateTabelaProximos() {
             row.innerHTML = `
                 <td>${p.descricao || '-'}</td>
                 <td>${parseFloat(p.valor).toFixed(2)}</td>
+                <td>${p.tipo || '-'}</td>
                 <td>${p.data_vencimento || '-'}</td>
                 <td>${p.status || '-'}</td>
             `;
