@@ -7,6 +7,30 @@ body {
     color: #5d4037;
 }
 
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.tab-link {
+    padding: 10px 20px;
+    background-color: #d4e4d2;
+    border: 1px solid #8bc34a;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    color: #5d4037;
+}
+
+.tab-link.active {
+    background-color: #8bc34a;
+    color: #fff;
+}
+
+.tab-content {
+    display: none;
+}
 header {
     background-color: #d4e4d2;
     padding: 10px 20px;
@@ -230,6 +254,19 @@ button[type="submit"]:hover {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-group input,
+.filter-group select {
+    flex: 1;
+    min-width: 150px;
 }
 
 table {
