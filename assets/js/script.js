@@ -239,6 +239,63 @@ function updateListaLogins() {
     }
 }
 
+let pagamentos = [];
+function loadPagamentos() {
+    fetch('../backend/get_pagamentos.php')
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            pagamentos = data.pagamentos || [];
+            updateTabelaPagamentos();
+        })
+        .catch(error => {
+            console.error('Erro ao carregar pagamentos:', error);
+            showMessageBox('Erro ao carregar pagamentos: ' + error.message, 'error');
+        });
+}
+
+function updateTabelaPagamentos() {
+    const tbody = document.querySelector('#tabela-pagamentos tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+        pagamentos.forEach(p => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${p.descricao || '-'}</td>
+                <td>${parseFloat(p.valor).toFixed(2)}</td>
+                <td>${p.data_vencimento || '-'}</td>
+                <td>${p.data_pagamento || '-'}</td>
+                <td>${p.status || '-'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+}
+
+function cadastrarPagamento(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    fetch('../backend/save_pagamento.php', { method: 'POST', body: formData })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            showMessageBox(data.message, data.status);
+            if (data.status === 'success') {
+                form.reset();
+                loadPagamentos();
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao cadastrar pagamento:', error);
+            showMessageBox('Erro ao cadastrar pagamento: ' + error.message, 'error');
+        });
+}
+
 function updateDashboard() {
     const perfilCriadoEl = document.getElementById('perfil-criado');
     const googleAprovadoEl = document.getElementById('google-aprovado');
@@ -477,7 +534,7 @@ function copiarTexto(button) {
 }
 
 function openAdminTab(tab) {
-    const tabs = ['gerenciamento', 'graficos'];
+    const tabs = ['gerenciamento', 'graficos', 'pagamentos'];
     tabs.forEach(t => {
         const content = document.getElementById(`tab-${t}`);
         const link = document.querySelector(`.tab-link[data-tab="${t}"]`);
@@ -489,6 +546,8 @@ function openAdminTab(tab) {
     });
     if (tab === 'graficos') {
         updateCharts();
+    } else if (tab === 'pagamentos') {
+        loadPagamentos();
     }
 }
 
@@ -509,6 +568,9 @@ window.onload = function() {
     if (typeof openAdminTab === 'function') {
         openAdminTab('gerenciamento');
     }
+
+    const formPag = document.getElementById('form-pagamento');
+    if (formPag) formPag.addEventListener('submit', cadastrarPagamento);
 
     const nomeInput = document.getElementById('filtro-nome');
     if (nomeInput) nomeInput.addEventListener('input', updateListaPerfis);
