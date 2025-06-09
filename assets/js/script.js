@@ -133,6 +133,7 @@ function loadData() {
             updateListaPerfis();
             updateListaLogins();
             updateDashboard();
+            updateCharts();
         })
         .catch(error => {
             console.error('Erro ao carregar dados:', error);
@@ -254,6 +255,52 @@ function updateDashboard() {
     if (empresasDisponiveisEl) empresasDisponiveisEl.textContent = empresasDisponiveis;
     if (pessoasDisponiveisEl) pessoasDisponiveisEl.textContent = pessoasDisponiveis;
     if (emailsDisponiveisEl) emailsDisponiveisEl.textContent = emailsDisponiveis;
+}
+
+let graficoRecursos;
+function updateCharts() {
+    const totalEmpresas = empresas.length;
+    const totalPessoas = pessoas.length;
+    const totalEmails = emails.length;
+
+    const usadosEmpresas = totalEmpresas - empresasDisponiveis;
+    const usadosPessoas = totalPessoas - pessoasDisponiveis;
+    const usadosEmails = totalEmails - emailsDisponiveis;
+
+    const dados = {
+        labels: ['Empresas', 'Pessoas', 'Emails'],
+        datasets: [
+            {
+                label: 'Disponíveis',
+                backgroundColor: '#8bc34a',
+                data: [empresasDisponiveis, pessoasDisponiveis, emailsDisponiveis]
+            },
+            {
+                label: 'Usados',
+                backgroundColor: '#ff9800',
+                data: [usadosEmpresas, usadosPessoas, usadosEmails]
+            }
+        ]
+    };
+
+    if (graficoRecursos) {
+        graficoRecursos.data = dados;
+        graficoRecursos.update();
+    } else if (document.getElementById('grafico-recursos')) {
+        const ctx = document.getElementById('grafico-recursos').getContext('2d');
+        graficoRecursos = new Chart(ctx, {
+            type: 'bar',
+            data: dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 }
 
 function toggleCnpj() {
@@ -429,6 +476,22 @@ function copiarTexto(button) {
     });
 }
 
+function openAdminTab(tab) {
+    const tabs = ['gerenciamento', 'graficos'];
+    tabs.forEach(t => {
+        const content = document.getElementById(`tab-${t}`);
+        const link = document.querySelector(`.tab-link[data-tab="${t}"]`);
+        if (content) content.style.display = t === tab ? 'block' : 'none';
+        if (link) {
+            if (t === tab) link.classList.add('active');
+            else link.classList.remove('active');
+        }
+    });
+    if (tab === 'graficos') {
+        updateCharts();
+    }
+}
+
 function toggleLoginDetails(titleElement) {
     const details = titleElement.nextElementSibling;
     if (details.style.display === 'none' || details.style.display === '') {
@@ -443,6 +506,9 @@ function toggleLoginDetails(titleElement) {
 window.onload = function() {
     loadData();
     updateTime();
+    if (typeof openAdminTab === 'function') {
+        openAdminTab('gerenciamento');
+    }
 
     const nomeInput = document.getElementById('filtro-nome');
     if (nomeInput) nomeInput.addEventListener('input', updateListaPerfis);

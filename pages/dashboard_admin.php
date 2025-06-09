@@ -187,6 +187,14 @@ $colunas_perfil = [
     <button onclick="closeMessageBox()">Fechar</button>
 </div>
 
+<!-- Abas do Dashboard -->
+<div class="tabs">
+    <button class="tab-link active" data-tab="gerenciamento" onclick="openAdminTab('gerenciamento')">Gerenciamento</button>
+    <button class="tab-link" data-tab="graficos" onclick="openAdminTab('graficos')">Gráficos</button>
+</div>
+
+<div id="tab-gerenciamento" class="tab-content" style="display: block;">
+
 <!-- Botões Principais -->
 <div class="button-group">
     <button onclick="openModal('modal-add-info')" class="btn destaque">+ Add Informações</button>
@@ -609,6 +617,13 @@ $colunas_perfil = [
         </thead>
         <tbody></tbody>
     </table>
+</div>
+
+</div><!-- fim tab-gerenciamento -->
+
+<div id="tab-graficos" class="tab-content">
+    <h2>Gráficos de Utilização</h2>
+    <canvas id="grafico-recursos" width="600" height="300"></canvas>
 </div>
 
 <script>
