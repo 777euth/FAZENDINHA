@@ -1,0 +1,17 @@
+# Ignore PHP configuration with credentials
+config.php
+.env
+
+# Ignore uploaded files
+uploads/
+backend/uploads/
+
+# Ignore vendor folder if using composer
+vendor/
+
+# Ignore OS files
+.DS_Store
+
+# SQLite database files
+*.db
+database/
