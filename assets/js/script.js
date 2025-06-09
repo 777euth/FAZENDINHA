@@ -256,6 +256,23 @@ function loadPagamentos() {
         });
 }
 
+let proximosPagamentos = [];
+function loadProximosPagamentos() {
+    fetch('../backend/get_pagamentos.php?proximos=1')
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            proximosPagamentos = data.pagamentos || [];
+            updateTabelaProximos();
+        })
+        .catch(error => {
+            console.error('Erro ao carregar próximos pagamentos:', error);
+            showMessageBox('Erro ao carregar próximos pagamentos: ' + error.message, 'error');
+        });
+}
+
 function updateTabelaPagamentos() {
     const tbody = document.querySelector('#tabela-pagamentos tbody');
     if (tbody) {
@@ -267,6 +284,23 @@ function updateTabelaPagamentos() {
                 <td>${parseFloat(p.valor).toFixed(2)}</td>
                 <td>${p.data_vencimento || '-'}</td>
                 <td>${p.data_pagamento || '-'}</td>
+                <td>${p.status || '-'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+}
+
+function updateTabelaProximos() {
+    const tbody = document.querySelector('#tabela-proximos tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+        proximosPagamentos.forEach(p => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${p.descricao || '-'}</td>
+                <td>${parseFloat(p.valor).toFixed(2)}</td>
+                <td>${p.data_vencimento || '-'}</td>
                 <td>${p.status || '-'}</td>
             `;
             tbody.appendChild(row);
@@ -534,7 +568,7 @@ function copiarTexto(button) {
 }
 
 function openAdminTab(tab) {
-    const tabs = ['gerenciamento', 'graficos', 'pagamentos'];
+    const tabs = ['gerenciamento', 'graficos', 'pagamentos', 'proximos'];
     tabs.forEach(t => {
         const content = document.getElementById(`tab-${t}`);
         const link = document.querySelector(`.tab-link[data-tab="${t}"]`);
@@ -548,6 +582,8 @@ function openAdminTab(tab) {
         updateCharts();
     } else if (tab === 'pagamentos') {
         loadPagamentos();
+    } else if (tab === 'proximos') {
+        loadProximosPagamentos();
     }
 }
 

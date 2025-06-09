@@ -192,6 +192,7 @@ $colunas_perfil = [
     <button class="tab-link active" data-tab="gerenciamento" onclick="openAdminTab('gerenciamento')">Gerenciamento</button>
     <button class="tab-link" data-tab="graficos" onclick="openAdminTab('graficos')">Gráficos</button>
     <button class="tab-link" data-tab="pagamentos" onclick="openAdminTab('pagamentos')">Pagamentos</button>
+    <button class="tab-link" data-tab="proximos" onclick="openAdminTab('proximos')">Próximos Pagamentos</button>
 </div>
 
 <div id="tab-gerenciamento" class="tab-content" style="display: block;">
@@ -662,6 +663,21 @@ $colunas_perfil = [
                 <th>Valor</th>
                 <th>Vencimento</th>
                 <th>Pagamento</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div id="tab-proximos" class="tab-content">
+    <h2>Próximos Pagamentos</h2>
+    <table id="tabela-proximos">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Vencimento</th>
                 <th>Status</th>
             </tr>
         </thead>
