@@ -187,6 +187,16 @@ $colunas_perfil = [
     <button onclick="closeMessageBox()">Fechar</button>
 </div>
 
+<!-- Abas do Dashboard -->
+<div class="tabs">
+    <button class="tab-link active" data-tab="gerenciamento" onclick="openAdminTab('gerenciamento')">Gerenciamento</button>
+    <button class="tab-link" data-tab="graficos" onclick="openAdminTab('graficos')">Gráficos</button>
+    <button class="tab-link" data-tab="pagamentos" onclick="openAdminTab('pagamentos')">Pagamentos</button>
+    <button class="tab-link" data-tab="proximos" onclick="openAdminTab('proximos')">Próximos Pagamentos</button>
+</div>
+
+<div id="tab-gerenciamento" class="tab-content" style="display: block;">
+
 <!-- Botões Principais -->
 <div class="button-group">
     <button onclick="openModal('modal-add-info')" class="btn destaque">+ Add Informações</button>
@@ -605,6 +615,80 @@ $colunas_perfil = [
                 <th>Status</th>
                 <th>Objetivo</th>
                 <th>Último Evento</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+</div><!-- fim tab-gerenciamento -->
+
+<div id="tab-graficos" class="tab-content">
+    <h2>Gráficos de Utilização</h2>
+    <canvas id="grafico-recursos" width="600" height="300"></canvas>
+</div>
+
+<div id="tab-pagamentos" class="tab-content">
+    <h2>Cadastro de Pagamentos</h2>
+    <form id="form-pagamento" onsubmit="cadastrarPagamento(event)">
+        <div class="form-row">
+            <label for="descricao_pag">Descrição:</label>
+            <input type="text" id="descricao_pag" name="descricao" required>
+        </div>
+        <div class="form-row">
+            <label for="valor_pag">Valor:</label>
+            <input type="number" step="0.01" id="valor_pag" name="valor" required>
+        </div>
+        <div class="form-row">
+            <label for="venc_pag">Data de Vencimento:</label>
+            <input type="date" id="venc_pag" name="data_vencimento" required>
+        </div>
+        <div class="form-row">
+            <label for="pag_pag">Data de Pagamento:</label>
+            <input type="date" id="pag_pag" name="data_pagamento">
+        </div>
+        <div class="form-row">
+            <label for="tipo_pag">Tipo de Pagamento:</label>
+            <select id="tipo_pag" name="tipo" required>
+                <option value="Unico">Único</option>
+                <option value="Mensal">Mensal</option>
+                <option value="Anual">Anual</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="status_pag">Status:</label>
+            <select id="status_pag" name="status" required>
+                <option value="Pendente">Pendente</option>
+                <option value="Pago">Pago</option>
+            </select>
+        </div>
+        <button type="submit">Salvar</button>
+    </form>
+    <table id="tabela-pagamentos">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Vencimento</th>
+                <th>Pagamento</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div id="tab-proximos" class="tab-content">
+    <h2>Próximos Pagamentos</h2>
+    <table id="tabela-proximos">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Vencimento</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody></tbody>
