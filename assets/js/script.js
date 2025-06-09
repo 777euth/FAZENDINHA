@@ -213,7 +213,9 @@ function updateListaPerfis() {
                 <td data-label="${labels[9]}">${perfil.ultimo_evento || '-'}</td>
             `;
             row.style.cursor = 'pointer';
-            row.addEventListener('click', () => {
+            row.addEventListener('click', () => openEditPerfilModal(perfil));
+            row.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
                 window.location.href = `eventos.php?perfil_id=${perfil.id}`;
             });
             tbody.appendChild(row);
@@ -476,6 +478,20 @@ function openEditLoginModal(id, nome_site, url, login, senha) {
     }
 }
 
+function openEditPerfilModal(perfil) {
+    const form = document.getElementById('form-edit-perfil');
+    if (form) {
+        form.querySelector('#perfil-id').value = perfil.id || '';
+        form.querySelector('#perfil-google').value = perfil.google_aprovado || '';
+        form.querySelector('#perfil-campanhas').value = perfil.campanhas || '';
+        form.querySelector('#perfil-suspensa').value = perfil.conta_suspensa || '';
+        form.querySelector('#perfil-estado').value = perfil.estado || '';
+        form.querySelector('#perfil-status').value = perfil.status || '';
+        form.querySelector('#perfil-objetivo').value = perfil.objetivo || '';
+        openModal('modal-edit-perfil');
+    }
+}
+
 function saveEditedItem(event, type) {
     event.preventDefault();
     event.stopPropagation();
@@ -516,6 +532,34 @@ function saveEditedItem(event, type) {
     .catch(error => {
         console.error('Erro ao salvar item:', error);
         showMessageBox('Erro ao salvar item: ' + error.message, 'error');
+    });
+}
+
+function savePerfilEdit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch('../backend/edit_perfil.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na resposta do servidor: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        showMessageBox(data.message, data.status);
+        if (data.status === 'success') {
+            closeModal('modal-edit-perfil');
+            loadData();
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao salvar perfil:', error);
+        showMessageBox('Erro ao salvar perfil: ' + error.message, 'error');
     });
 }
 
@@ -609,6 +653,9 @@ window.onload = function() {
 
     const formPag = document.getElementById('form-pagamento');
     if (formPag) formPag.addEventListener('submit', cadastrarPagamento);
+
+    const formEditPerfil = document.getElementById('form-edit-perfil');
+    if (formEditPerfil) formEditPerfil.addEventListener('submit', savePerfilEdit);
 
     const nomeInput = document.getElementById('filtro-nome');
     if (nomeInput) nomeInput.addEventListener('input', updateListaPerfis);
