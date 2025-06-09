@@ -60,7 +60,6 @@ function submitForm(event, type) {
     const form = event.target;
     const formData = new FormData(form);
 
-    console.log(`Enviando formulário tipo: ${type}`);
 
     let url;
     switch (type) {
@@ -97,7 +96,6 @@ function submitForm(event, type) {
         return response.json();
     })
     .then(data => {
-        console.log('Resposta recebida:', data);
         showMessageBox(data.message, data.status);
         if (data.status === 'success') {
             closeModal(form.closest('.modal').id);
@@ -167,7 +165,6 @@ function updateListaPerfis() {
     const tbody = document.querySelector('#tabela-perfis tbody');
     if (tbody) {
         tbody.innerHTML = '';
-        console.log('Perfis recebidos:', perfis);
 
         const nomeFiltro = (document.getElementById('filtro-nome')?.value || '').toLowerCase();
         const googleFiltro = document.getElementById('filtro-google')?.value || '';
