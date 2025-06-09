@@ -168,7 +168,21 @@ function updateListaPerfis() {
         tbody.innerHTML = '';
         console.log('Perfis recebidos:', perfis);
 
-        const perfisCriados = perfis.filter(perfil => perfil.perfil_criado);
+        const nomeFiltro = (document.getElementById('filtro-nome')?.value || '').toLowerCase();
+        const googleFiltro = document.getElementById('filtro-google')?.value || '';
+        const statusFiltro = document.getElementById('filtro-status')?.value || '';
+        const contaFiltro = document.getElementById('filtro-conta')?.value || '';
+        const estadoFiltro = document.getElementById('filtro-estado')?.value || '';
+
+        const perfisCriados = perfis.filter(perfil => perfil.perfil_criado).filter(perfil => {
+            const nome = (perfil.nome_perfil || '').toLowerCase();
+            if (nomeFiltro && !nome.includes(nomeFiltro)) return false;
+            if (googleFiltro && perfil.google_aprovado !== googleFiltro) return false;
+            if (statusFiltro && perfil.status !== statusFiltro) return false;
+            if (contaFiltro && perfil.conta_suspensa !== contaFiltro) return false;
+            if (estadoFiltro && perfil.estado !== estadoFiltro) return false;
+            return true;
+        });
 
         const labels = [
             'Nome do Perfil',
@@ -429,4 +443,12 @@ function toggleLoginDetails(titleElement) {
 window.onload = function() {
     loadData();
     updateTime();
+
+    const nomeInput = document.getElementById('filtro-nome');
+    if (nomeInput) nomeInput.addEventListener('input', updateListaPerfis);
+
+    ['filtro-google', 'filtro-status', 'filtro-conta', 'filtro-estado'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', updateListaPerfis);
+    });
 };

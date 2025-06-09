@@ -232,6 +232,19 @@ button[type="submit"]:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-group input,
+.filter-group select {
+    flex: 1;
+    min-width: 150px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;

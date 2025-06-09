@@ -80,6 +80,30 @@ $emails = $conn->query("SELECT id, email FROM emails WHERE id NOT IN (SELECT ema
 <!-- Lista de Perfis -->
 <div class="lista-perfis">
     <h2>Lista de Perfis</h2>
+    <div class="filter-group">
+        <input type="text" id="filtro-nome" placeholder="Buscar nome">
+        <select id="filtro-google">
+            <option value="">Google Aprovado</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Pendente">Pendente</option>
+        </select>
+        <select id="filtro-status">
+            <option value="">Status</option>
+            <option value="Ativa">Ativa</option>
+            <option value="Inativa">Inativa</option>
+        </select>
+        <select id="filtro-conta">
+            <option value="">Conta Suspensa</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select>
+        <select id="filtro-estado">
+            <option value="">Estado</option>
+            <option value="Aguardando">Aguardando</option>
+            <option value="Rodando">Rodando</option>
+            <option value="Pausado">Pausado</option>
+        </select>
+    </div>
     <table id="tabela-perfis">
         <thead>
             <tr>
