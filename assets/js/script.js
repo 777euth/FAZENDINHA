@@ -133,6 +133,7 @@ function loadData() {
             updateListaPerfis();
             updateListaLogins();
             updateDashboard();
+            updateCharts();
         })
         .catch(error => {
             console.error('Erro ao carregar dados:', error);
@@ -168,7 +169,21 @@ function updateListaPerfis() {
         tbody.innerHTML = '';
         console.log('Perfis recebidos:', perfis);
 
-        const perfisCriados = perfis.filter(perfil => perfil.perfil_criado);
+        const nomeFiltro = (document.getElementById('filtro-nome')?.value || '').toLowerCase();
+        const googleFiltro = document.getElementById('filtro-google')?.value || '';
+        const statusFiltro = document.getElementById('filtro-status')?.value || '';
+        const contaFiltro = document.getElementById('filtro-conta')?.value || '';
+        const estadoFiltro = document.getElementById('filtro-estado')?.value || '';
+
+        const perfisCriados = perfis.filter(perfil => perfil.perfil_criado).filter(perfil => {
+            const nome = (perfil.nome_perfil || '').toLowerCase();
+            if (nomeFiltro && !nome.includes(nomeFiltro)) return false;
+            if (googleFiltro && perfil.google_aprovado !== googleFiltro) return false;
+            if (statusFiltro && perfil.status !== statusFiltro) return false;
+            if (contaFiltro && perfil.conta_suspensa !== contaFiltro) return false;
+            if (estadoFiltro && perfil.estado !== estadoFiltro) return false;
+            return true;
+        });
 
         const labels = [
             'Nome do Perfil',
@@ -224,6 +239,99 @@ function updateListaLogins() {
     }
 }
 
+let pagamentos = [];
+function loadPagamentos() {
+    fetch('../backend/get_pagamentos.php')
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            pagamentos = data.pagamentos || [];
+            updateTabelaPagamentos();
+        })
+        .catch(error => {
+            console.error('Erro ao carregar pagamentos:', error);
+            showMessageBox('Erro ao carregar pagamentos: ' + error.message, 'error');
+        });
+}
+
+let proximosPagamentos = [];
+function loadProximosPagamentos() {
+    fetch('../backend/get_pagamentos.php?proximos=1')
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            proximosPagamentos = data.pagamentos || [];
+            updateTabelaProximos();
+        })
+        .catch(error => {
+            console.error('Erro ao carregar próximos pagamentos:', error);
+            showMessageBox('Erro ao carregar próximos pagamentos: ' + error.message, 'error');
+        });
+}
+
+function updateTabelaPagamentos() {
+    const tbody = document.querySelector('#tabela-pagamentos tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+        pagamentos.forEach(p => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${p.descricao || '-'}</td>
+                <td>${p.valor ? parseFloat(p.valor).toFixed(2) : '-'}</td>
+                <td>${p.tipo || '-'}</td>
+                <td>${p.data_vencimento || '-'}</td>
+                <td>${p.data_pagamento || '-'}</td>
+                <td>${p.status || '-'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+}
+
+function updateTabelaProximos() {
+    const tbody = document.querySelector('#tabela-proximos tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+        proximosPagamentos.forEach(p => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${p.descricao || '-'}</td>
+                <td>${p.valor ? parseFloat(p.valor).toFixed(2) : '-'}</td>
+                <td>${p.tipo || '-'}</td>
+                <td>${p.data_vencimento || '-'}</td>
+                <td>${p.status || '-'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+}
+
+function cadastrarPagamento(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    fetch('../backend/save_pagamento.php', { method: 'POST', body: formData })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            showMessageBox(data.message, data.status);
+            if (data.status === 'success') {
+                form.reset();
+                loadPagamentos();
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao cadastrar pagamento:', error);
+            showMessageBox('Erro ao cadastrar pagamento: ' + error.message, 'error');
+        });
+}
+
 function updateDashboard() {
     const perfilCriadoEl = document.getElementById('perfil-criado');
     const googleAprovadoEl = document.getElementById('google-aprovado');
@@ -240,6 +348,52 @@ function updateDashboard() {
     if (empresasDisponiveisEl) empresasDisponiveisEl.textContent = empresasDisponiveis;
     if (pessoasDisponiveisEl) pessoasDisponiveisEl.textContent = pessoasDisponiveis;
     if (emailsDisponiveisEl) emailsDisponiveisEl.textContent = emailsDisponiveis;
+}
+
+let graficoRecursos;
+function updateCharts() {
+    const totalEmpresas = empresas.length;
+    const totalPessoas = pessoas.length;
+    const totalEmails = emails.length;
+
+    const usadosEmpresas = totalEmpresas - empresasDisponiveis;
+    const usadosPessoas = totalPessoas - pessoasDisponiveis;
+    const usadosEmails = totalEmails - emailsDisponiveis;
+
+    const dados = {
+        labels: ['Empresas', 'Pessoas', 'Emails'],
+        datasets: [
+            {
+                label: 'Disponíveis',
+                backgroundColor: '#8bc34a',
+                data: [empresasDisponiveis, pessoasDisponiveis, emailsDisponiveis]
+            },
+            {
+                label: 'Usados',
+                backgroundColor: '#ff9800',
+                data: [usadosEmpresas, usadosPessoas, usadosEmails]
+            }
+        ]
+    };
+
+    if (graficoRecursos) {
+        graficoRecursos.data = dados;
+        graficoRecursos.update();
+    } else if (document.getElementById('grafico-recursos')) {
+        const ctx = document.getElementById('grafico-recursos').getContext('2d');
+        graficoRecursos = new Chart(ctx, {
+            type: 'bar',
+            data: dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 }
 
 function toggleCnpj() {
@@ -415,6 +569,26 @@ function copiarTexto(button) {
     });
 }
 
+function openAdminTab(tab) {
+    const tabs = ['gerenciamento', 'graficos', 'pagamentos', 'proximos'];
+    tabs.forEach(t => {
+        const content = document.getElementById(`tab-${t}`);
+        const link = document.querySelector(`.tab-link[data-tab="${t}"]`);
+        if (content) content.style.display = t === tab ? 'block' : 'none';
+        if (link) {
+            if (t === tab) link.classList.add('active');
+            else link.classList.remove('active');
+        }
+    });
+    if (tab === 'graficos') {
+        updateCharts();
+    } else if (tab === 'pagamentos') {
+        loadPagamentos();
+    } else if (tab === 'proximos') {
+        loadProximosPagamentos();
+    }
+}
+
 function toggleLoginDetails(titleElement) {
     const details = titleElement.nextElementSibling;
     if (details.style.display === 'none' || details.style.display === '') {
@@ -429,4 +603,18 @@ function toggleLoginDetails(titleElement) {
 window.onload = function() {
     loadData();
     updateTime();
+    if (typeof openAdminTab === 'function') {
+        openAdminTab('gerenciamento');
+    }
+
+    const formPag = document.getElementById('form-pagamento');
+    if (formPag) formPag.addEventListener('submit', cadastrarPagamento);
+
+    const nomeInput = document.getElementById('filtro-nome');
+    if (nomeInput) nomeInput.addEventListener('input', updateListaPerfis);
+
+    ['filtro-google', 'filtro-status', 'filtro-conta', 'filtro-estado'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', updateListaPerfis);
+    });
 };
