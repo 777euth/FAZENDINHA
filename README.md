@@ -5,16 +5,15 @@ Este projeto é uma aplicação web simples em PHP para gerenciamento de perfis,
 ## Requisitos
 - PHP 7.4 ou superior
 - Servidor web (Apache, Nginx ou similar)
-- MySQL ou MariaDB
+- SQLite 3
 
 ## Configuração
-1. Copie o arquivo `.env.example` para `.env` e ajuste com as credenciais do banco de dados.
+1. Copie o arquivo `.env.example` para `.env` e defina o caminho do arquivo SQLite em `DB_PATH`.
    ```bash
    cp .env.example .env
-   # Edite o arquivo .env para colocar usuario e senha.
-   # Um exemplo de configuracao esta em .env.example.
+   # Edite o arquivo .env para informar o caminho do seu banco .db
    ```
-2. Importe o esquema de banco de dados correspondente (não incluído neste repositório).
+2. Importe o esquema de banco de dados correspondente (não incluído neste repositório) para o arquivo `.db` indicado.
 3. Certifique-se de que a pasta `uploads/` tenha permissões de escrita caso utilize upload de arquivos.
 4. Inicie o servidor web apontando para o diretório do projeto.
 

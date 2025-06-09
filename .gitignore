@@ -11,3 +11,7 @@ vendor/
 
 # Ignore OS files
 .DS_Store
+
+# SQLite database files
+*.db
+database/

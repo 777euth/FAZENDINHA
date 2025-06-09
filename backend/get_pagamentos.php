@@ -10,7 +10,7 @@ if (!isset($_SESSION['categoria']) || $_SESSION['categoria'] !== 'Admin') {
 $apenasProximos = isset($_GET['proximos']);
 $query = "SELECT * FROM pagamentos";
 if ($apenasProximos) {
-    $query .= " WHERE data_vencimento >= CURDATE() ORDER BY data_vencimento ASC";
+    $query .= " WHERE data_vencimento >= DATE('now') ORDER BY data_vencimento ASC";
 } else {
     $query .= " ORDER BY data_vencimento DESC";
 }
