@@ -77,9 +77,70 @@ $emails = $conn->query("SELECT id, email FROM emails WHERE id NOT IN (SELECT ema
     </div>
 </div>
 
+<!-- Modal Editar Perfil -->
+<div id="modal-edit-perfil" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal-edit-perfil')">×</span>
+        <h2>Editar Perfil</h2>
+        <form id="form-edit-perfil">
+            <input type="hidden" name="id" id="perfil-id">
+            <label>Google Aprovado:</label>
+            <select name="google_aprovado" id="perfil-google">
+                <option value="Aprovado">Aprovado</option>
+                <option value="Pendente">Pendente</option>
+            </select>
+            <label>Campanhas:</label>
+            <input type="text" name="campanhas" id="perfil-campanhas">
+            <label>Conta Suspensa:</label>
+            <select name="conta_suspensa" id="perfil-suspensa">
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select>
+            <label>Estado:</label>
+            <select name="estado" id="perfil-estado">
+                <option value="Aguardando">Aguardando</option>
+                <option value="Rodando">Rodando</option>
+                <option value="Pausado">Pausado</option>
+            </select>
+            <label>Status:</label>
+            <select name="status" id="perfil-status">
+                <option value="Ativa">Ativa</option>
+                <option value="Inativa">Inativa</option>
+            </select>
+            <label>Objetivo:</label>
+            <input type="text" name="objetivo" id="perfil-objetivo">
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+</div>
+
 <!-- Lista de Perfis -->
 <div class="lista-perfis">
     <h2>Lista de Perfis</h2>
+    <div class="filter-group">
+        <input type="text" id="filtro-nome" placeholder="Buscar nome">
+        <select id="filtro-google">
+            <option value="">Google Aprovado</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Pendente">Pendente</option>
+        </select>
+        <select id="filtro-status">
+            <option value="">Status</option>
+            <option value="Ativa">Ativa</option>
+            <option value="Inativa">Inativa</option>
+        </select>
+        <select id="filtro-conta">
+            <option value="">Conta Suspensa</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select>
+        <select id="filtro-estado">
+            <option value="">Estado</option>
+            <option value="Aguardando">Aguardando</option>
+            <option value="Rodando">Rodando</option>
+            <option value="Pausado">Pausado</option>
+        </select>
+    </div>
     <table id="tabela-perfis">
         <thead>
             <tr>
