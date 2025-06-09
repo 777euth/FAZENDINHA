@@ -11,7 +11,8 @@ Este projeto é uma aplicação web simples em PHP para gerenciamento de perfis,
 1. Copie o arquivo `.env.example` para `.env` e ajuste com as credenciais do banco de dados.
    ```bash
    cp .env.example .env
-   # Edite o arquivo .env para colocar usuario e senha
+   # Edite o arquivo .env para colocar usuario e senha.
+   # Um exemplo de configuracao esta em .env.example.
    ```
 2. Importe o esquema de banco de dados correspondente (não incluído neste repositório).
 3. Certifique-se de que a pasta `uploads/` tenha permissões de escrita caso utilize upload de arquivos.

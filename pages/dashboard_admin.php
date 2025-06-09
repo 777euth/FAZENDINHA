@@ -235,7 +235,7 @@ $colunas_perfil = [
                 <option value="Cadastrar">Cadastrar</option>
                 <option value="Fazendeiro">Fazendeiro</option>
             </select>
-            <button type="submit" name="add_user">Criar Usuário</button>
+            <button type="submit" name="add_user" class="btn">Criar Usuário</button>
         </form>
     </div>
 </div>
@@ -386,7 +386,7 @@ $colunas_perfil = [
                     </div>
                 </div>
             </div>
-            <button type="submit" name="add_evento">Criar Evento</button>
+            <button type="submit" name="add_evento" class="btn">Criar Evento</button>
         </form>
     </div>
 </div>
@@ -409,7 +409,7 @@ $colunas_perfil = [
             <input type="file" name="pdf_cnpj" accept=".pdf">
             <label>PDF SUSEP:</label>
             <input type="file" name="pdf_susep" accept=".pdf">
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -425,7 +425,7 @@ $colunas_perfil = [
             <input type="file" name="rg_frente" accept="image/jpeg,image/png" required>
             <label>RG Trás (JPG/PNG, máx. 2MB):</label>
             <input type="file" name="rg_tras" accept="image/jpeg,image/png" required>
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -439,7 +439,7 @@ $colunas_perfil = [
             <input type="email" name="email" placeholder="Email" required>
             <input type="text" name="senha" placeholder="Senha" required>
             <input type="email" name="email_rec" placeholder="Email Recuperação" required>
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -455,7 +455,7 @@ $colunas_perfil = [
             <input type="text" name="objetivo" placeholder="Objetivo">
             <input type="text" name="pasta_gologin" placeholder="Pasta GoLogin">
             <input type="text" name="evento" placeholder="Evento">
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -497,7 +497,7 @@ $colunas_perfil = [
             <select name="opcao_id" id="select-pasta-gologin" required>
                 <option value="">Selecione uma pasta</option>
             </select>
-            <button type="submit">Criar Perfil</button>
+            <button type="submit" class="btn">Criar Perfil</button>
         </form>
     </div>
 </div>
@@ -558,7 +558,7 @@ $colunas_perfil = [
                 <input type="file" name="pdf_susep" id="pdf_susep_new" accept=".pdf">
             </div>
             <div class="form-actions">
-                <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
                 <button type="button" class="btn-apagar" onclick="deleteItem('empresa')">Apagar</button>
             </div>
         </form>
@@ -574,7 +574,7 @@ $colunas_perfil = [
             <input type="hidden" name="id">
             <input type="text" name="nome" placeholder="Nome" required>
             <div class="form-actions">
-                <button type="submit">Salvar</button>
+                <button type="submit" class="btn">Salvar</button>
                 <button type="button" class="btn-apagar" onclick="deleteItem('pessoa')">Apagar</button>
             </div>
         </form>
@@ -592,7 +592,7 @@ $colunas_perfil = [
             <input type="text" name="senha" placeholder="Senha" required>
             <input type="email" name="email_rec" placeholder="Email Recuperação" required>
             <div class="form-actions">
-                <button type="submit">Salvar</button>
+                <button type="submit" class="btn">Salvar</button>
                 <button type="button" class="btn-apagar" onclick="deleteItem('email')">Apagar</button>
             </div>
         </form>
@@ -662,7 +662,7 @@ $colunas_perfil = [
                 <option value="Pago">Pago</option>
             </select>
         </div>
-        <button type="submit">Salvar</button>
+        <button type="submit" class="btn">Salvar</button>
     </form>
     <table id="tabela-pagamentos">
         <thead>
