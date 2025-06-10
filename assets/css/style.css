@@ -643,6 +643,11 @@ td {
     font-weight: 600;
 }
 
+.table-wrapper {
+    max-height: 70vh;
+    overflow: auto;
+}
+
 #tabela-perfis {
     width: 100%;
     border-collapse: collapse;

@@ -626,6 +626,7 @@ $colunas_perfil = [
             <option value="Concluído">Concluído</option>
         </select>
     </div>
+    <div class="table-wrapper">
     <table id="tabela-perfis">
         <thead>
             <tr>
@@ -701,6 +702,7 @@ $colunas_perfil = [
         </thead>
         <tbody></tbody>
     </table>
+    </div>
 </div>
 
 <div id="tab-proximos" class="tab-content">

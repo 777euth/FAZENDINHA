@@ -141,6 +141,7 @@ $emails = $conn->query("SELECT id, email FROM emails WHERE id NOT IN (SELECT ema
             <option value="Pausado">Pausado</option>
         </select>
     </div>
+    <div class="table-wrapper">
     <table id="tabela-perfis">
         <thead>
             <tr>
@@ -158,6 +159,7 @@ $emails = $conn->query("SELECT id, email FROM emails WHERE id NOT IN (SELECT ema
         </thead>
         <tbody></tbody>
     </table>
+    </div>
 </div>
 
 <script>
