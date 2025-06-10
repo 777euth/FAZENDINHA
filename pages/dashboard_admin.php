@@ -187,6 +187,16 @@ $colunas_perfil = [
     <button onclick="closeMessageBox()">Fechar</button>
 </div>
 
+<!-- Abas do Dashboard -->
+<div class="tabs">
+    <button class="tab-link active" data-tab="gerenciamento" onclick="openAdminTab('gerenciamento')">Gerenciamento</button>
+    <button class="tab-link" data-tab="graficos" onclick="openAdminTab('graficos')">Gráficos</button>
+    <button class="tab-link" data-tab="pagamentos" onclick="openAdminTab('pagamentos')">Pagamentos</button>
+    <button class="tab-link" data-tab="proximos" onclick="openAdminTab('proximos')">Próximos Pagamentos</button>
+</div>
+
+<div id="tab-gerenciamento" class="tab-content" style="display: block;">
+
 <!-- Botões Principais -->
 <div class="button-group">
     <button onclick="openModal('modal-add-info')" class="btn destaque">+ Add Informações</button>
@@ -225,7 +235,7 @@ $colunas_perfil = [
                 <option value="Cadastrar">Cadastrar</option>
                 <option value="Fazendeiro">Fazendeiro</option>
             </select>
-            <button type="submit" name="add_user">Criar Usuário</button>
+            <button type="submit" name="add_user" class="btn">Criar Usuário</button>
         </form>
     </div>
 </div>
@@ -376,7 +386,7 @@ $colunas_perfil = [
                     </div>
                 </div>
             </div>
-            <button type="submit" name="add_evento">Criar Evento</button>
+            <button type="submit" name="add_evento" class="btn">Criar Evento</button>
         </form>
     </div>
 </div>
@@ -399,7 +409,7 @@ $colunas_perfil = [
             <input type="file" name="pdf_cnpj" accept=".pdf">
             <label>PDF SUSEP:</label>
             <input type="file" name="pdf_susep" accept=".pdf">
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -415,7 +425,7 @@ $colunas_perfil = [
             <input type="file" name="rg_frente" accept="image/jpeg,image/png" required>
             <label>RG Trás (JPG/PNG, máx. 2MB):</label>
             <input type="file" name="rg_tras" accept="image/jpeg,image/png" required>
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -429,7 +439,7 @@ $colunas_perfil = [
             <input type="email" name="email" placeholder="Email" required>
             <input type="text" name="senha" placeholder="Senha" required>
             <input type="email" name="email_rec" placeholder="Email Recuperação" required>
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -445,7 +455,7 @@ $colunas_perfil = [
             <input type="text" name="objetivo" placeholder="Objetivo">
             <input type="text" name="pasta_gologin" placeholder="Pasta GoLogin">
             <input type="text" name="evento" placeholder="Evento">
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 </div>
@@ -487,7 +497,7 @@ $colunas_perfil = [
             <select name="opcao_id" id="select-pasta-gologin" required>
                 <option value="">Selecione uma pasta</option>
             </select>
-            <button type="submit">Criar Perfil</button>
+            <button type="submit" class="btn">Criar Perfil</button>
         </form>
     </div>
 </div>
@@ -548,7 +558,7 @@ $colunas_perfil = [
                 <input type="file" name="pdf_susep" id="pdf_susep_new" accept=".pdf">
             </div>
             <div class="form-actions">
-                <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
                 <button type="button" class="btn-apagar" onclick="deleteItem('empresa')">Apagar</button>
             </div>
         </form>
@@ -564,7 +574,7 @@ $colunas_perfil = [
             <input type="hidden" name="id">
             <input type="text" name="nome" placeholder="Nome" required>
             <div class="form-actions">
-                <button type="submit">Salvar</button>
+                <button type="submit" class="btn">Salvar</button>
                 <button type="button" class="btn-apagar" onclick="deleteItem('pessoa')">Apagar</button>
             </div>
         </form>
@@ -582,7 +592,7 @@ $colunas_perfil = [
             <input type="text" name="senha" placeholder="Senha" required>
             <input type="email" name="email_rec" placeholder="Email Recuperação" required>
             <div class="form-actions">
-                <button type="submit">Salvar</button>
+                <button type="submit" class="btn">Salvar</button>
                 <button type="button" class="btn-apagar" onclick="deleteItem('email')">Apagar</button>
             </div>
         </form>
@@ -592,6 +602,31 @@ $colunas_perfil = [
 <!-- Lista de Perfis -->
 <div class="lista-perfis">
     <h2>Lista de Perfis</h2>
+    <div class="filter-group">
+        <input type="text" id="filtro-nome" placeholder="Buscar nome">
+        <select id="filtro-google">
+            <option value="">Google Aprovado</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Pendente">Pendente</option>
+        </select>
+        <select id="filtro-status">
+            <option value="">Status</option>
+            <option value="Ativa">Ativa</option>
+            <option value="Inativa">Inativa</option>
+        </select>
+        <select id="filtro-conta">
+            <option value="">Conta Suspensa</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select>
+        <select id="filtro-estado">
+            <option value="">Estado</option>
+            <option value="Aguardando">Aguardando</option>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Concluído">Concluído</option>
+        </select>
+    </div>
+    <div class="table-wrapper">
     <table id="tabela-perfis">
         <thead>
             <tr>
@@ -605,6 +640,81 @@ $colunas_perfil = [
                 <th>Status</th>
                 <th>Objetivo</th>
                 <th>Último Evento</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+</div><!-- fim tab-gerenciamento -->
+
+<div id="tab-graficos" class="tab-content">
+    <h2>Gráficos de Utilização</h2>
+    <canvas id="grafico-recursos" width="600" height="300"></canvas>
+</div>
+
+<div id="tab-pagamentos" class="tab-content">
+    <h2>Cadastro de Pagamentos</h2>
+    <form id="form-pagamento" onsubmit="cadastrarPagamento(event)">
+        <div class="form-row">
+            <label for="descricao_pag">Descrição:</label>
+            <input type="text" id="descricao_pag" name="descricao" required>
+        </div>
+        <div class="form-row">
+            <label for="valor_pag">Valor:</label>
+            <input type="number" step="0.01" id="valor_pag" name="valor" required>
+        </div>
+        <div class="form-row">
+            <label for="venc_pag">Data de Vencimento:</label>
+            <input type="date" id="venc_pag" name="data_vencimento" required>
+        </div>
+        <div class="form-row">
+            <label for="pag_pag">Data de Pagamento:</label>
+            <input type="date" id="pag_pag" name="data_pagamento">
+        </div>
+        <div class="form-row">
+            <label for="tipo_pag">Tipo de Pagamento:</label>
+            <select id="tipo_pag" name="tipo" required>
+                <option value="Unico">Único</option>
+                <option value="Mensal">Mensal</option>
+                <option value="Anual">Anual</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="status_pag">Status:</label>
+            <select id="status_pag" name="status" required>
+                <option value="Pendente">Pendente</option>
+                <option value="Pago">Pago</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Salvar</button>
+    </form>
+    <table id="tabela-pagamentos">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Vencimento</th>
+                <th>Pagamento</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    </div>
+</div>
+
+<div id="tab-proximos" class="tab-content">
+    <h2>Próximos Pagamentos</h2>
+    <table id="tabela-proximos">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Vencimento</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody></tbody>
